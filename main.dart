@@ -43,11 +43,11 @@ class Drone {
 }
 
 int main(List<String> arg) {
-  if (arg.length < 2) {
+  print("Google HashCode 2016");
+  if (arg.length < 1) {
     print("Error: you need to provide a file");
   }
-  File data = new File(arg[1]);
+  File data = new File(arg[0]);
 
-  print("Hello world");
   return 1;
 }
