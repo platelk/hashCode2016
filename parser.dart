@@ -12,6 +12,8 @@ class Simulation {
     List<Drone> drones;
     List<Customer> customers;
 
+    int deadline;
+
     Simulation();
 }
 
@@ -22,8 +24,10 @@ Simulation parse(File input) {
     List<String> mapParams = lines[0].split(' ');
 
     sim.grid = new Grid(int.parse(mapParams[1]), int.parse(mapParams[0]));
+    sim.drones = new List<Drone>.generate(int.parse(mapParams[2]), (int id) => new Drone(id: id, maxLoad: int.parse(mapParams[4])));
+    sim.deadline = int.parse(mapParams[3]);
 
-    print(sim.grid.width);
+    print(sim.drones.length);
 
     return sim;
 }
