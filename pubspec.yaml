@@ -1,0 +1,13 @@
+name: hashCode2016
+version: 0.0.1
+description: >
+  Code for the 2016 Google Hash Code.
+author: PLATEL Kevin <platel.kevin@gmail.com>
+# dependencies:
+#   efts: ^2.0.4
+#   transmogrify: ^0.4.0
+# dev_dependencies:
+#   test: '>=0.6.0 <0.12.0'
+# dependency_overrides:
+#   transmogrify:
+#     path: ../transmogrify_patch/
