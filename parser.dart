@@ -15,11 +15,11 @@ class Candidate {
 
 class Simulation {
   Grid grid;
+  int deadline;
 
   List<WareHouse> warehouses;
   List<Drone> drones;
   List<Customer> customers;
-
   List<String> actions;
 
   Simulation();
@@ -90,10 +90,9 @@ class Simulation {
   List<Drone> availableDrone() => drones.where((d) => d.isAvailable());
 
   void mainLoop() {
-    int maxTurn = 50; // TODO : Change to normal value
     List<Drone> aDrone;
 
-    for (int i = 0; i < maxTurn; i++) {
+    for (int i = 0; i < deadline; i++) {
       _oneDroneTurn();
       aDrone = availableDrone();
       _dronesLogic(aDrone);
@@ -107,8 +106,11 @@ Simulation parse(File input) {
   List<String> mapParams = lines[0].split(' ');
 
   sim.grid = new Grid(int.parse(mapParams[1]), int.parse(mapParams[0]));
+  sim.drones = new List<Drone>.generate(int.parse(mapParams[2]),
+      (int id) => new Drone(id: id, maxLoad: int.parse(mapParams[4])));
+  sim.deadline = int.parse(mapParams[3]);
 
-  print(sim.grid.width);
+  print(sim.drones.length);
 
   return sim;
 }

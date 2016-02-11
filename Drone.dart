@@ -15,6 +15,10 @@ class Drone {
 
   bool isAvailable() => actionDuration == 0;
 
+  String toString() {
+    return "[Drone# id: $id, maxLoad: $maxLoad, pos: $position, d: $actionDuration]";
+  }
+
   void _setWaitTime(Point p, {int base: 1}) {
     actionDuration += base;
     var dist = this.position.distanceTo(p);

@@ -11,4 +11,8 @@ class Item {
   int compateTo(Item i) {
     return id - id + weight - weight;
   }
+
+  String toString() {
+    return "[Item# id: $id, weight: $weight]";
+  }
 }
