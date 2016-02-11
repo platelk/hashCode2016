@@ -1,30 +1,29 @@
 import 'dart:io';
 
-import 'Map.dart';
+import 'Grid.dart';
 import 'Drone.dart';
+import 'WareHouse.dart';
+import 'Customer.dart';
 
 class Simulation {
-    Map map;
+    Grid grid;
 
     List<WareHouse> warehouses;
     List<Drone> drones;
-    List<Customers> customers;
+    List<Customer> customers;
 
     Simulation();
 }
 
-void createMap(Simulation sim, List<String> lines) {
-    sim.map = new Map();
-}
 
 Simulation parse(File input) {
-    Simultation sim = new Simulation();
+    Simulation sim = new Simulation();
     List<String> lines = input.readAsLinesSync();
     List<String> mapParams = lines[0].split(' ');
 
-    sim.map = new Map(int.parse(mapParams[1]), int.parse(mapParams[0]));
+    sim.grid = new Grid(int.parse(mapParams[1]), int.parse(mapParams[0]));
 
-    print(sim.map.width);
+    print(sim.grid.width);
 
     return sim;
 }
