@@ -15,6 +15,10 @@ class Drone {
 
   bool isAvailable() => actionDuration == 0;
 
+  String toString() {
+    return "[Drone# id: $id, maxLoad: $maxLoad, pos: $position, d: $actionDuration]";
+  }
+
   void _setWaitTime(Point p, {int base: 1}) {
     actionDuration += base;
     var dist = this.position.distanceTo(p);
@@ -27,16 +31,18 @@ class Drone {
       items[item] += nb;
     };
     _setWaitTime(wh.position);
+    _action();
     return "${id} L ${wh.id} ${item.id} ${nb}";
   }
 
-  String deliver(Order Order, Item item, int nb) {
+  String deliver(Order customer, Item item, int nb) {
     _action = () {
       items[item] -= nb;
-      Order.orders[item] -= nb;
+       customer.orders[item] -= nb;
     };
-    _setWaitTime(Order.position);
-    return "${id} D ${Order.id} ${item.id} ${nb}";
+    _setWaitTime(customer.position);
+    _action();
+    return "${id} D ${customer.id} ${item.id} ${nb}";
   }
 
   String wait(int nb) {
@@ -50,12 +56,13 @@ class Drone {
       wh.stock[item] += nb;
     };
     _setWaitTime(wh.position);
+    _action();
     return "${id} U ${wh.id} ${item.id} ${nb}";
   }
 
   void oneTurn() {
     if (actionDuration == 1 && _action != null) {
-      _action();
+      // _action();
       _action = null;
     }
     if (actionDuration > 0) actionDuration -= 1;

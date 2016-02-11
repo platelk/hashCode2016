@@ -6,29 +6,111 @@ import 'Grid.dart';
 import 'Drone.dart';
 import 'WareHouse.dart';
 import 'Order.dart';
+import 'Item.dart';
+
+class Candidate {
+  Order customers;
+  WareHouse warehouse;
+  Map<Item, int> items = {};
+}
 
 class Simulation {
-    Grid grid;
+  Grid grid;
+  int deadline;
 
     List<WareHouse> warehouses;
     List<Drone> drones;
     List<Order> orders;
+  List<String> actions;
 
-    int deadline;
+  Simulation();
 
-    Simulation();
+  void _oneDroneTurn() {
+    for (var d in drones) {
+      d.oneTurn();
+    }
+  }
+
+  Map<Item, int> availableItemInWarehouse(WareHouse wh, Order c, Drone d) {
+    Map<Item, int> available = {};
+    int weight = 0;
+
+    for (var item in wh.stock.keys) {
+      if (wh.stock[item] > 0 &&
+          c.orders[item] > 0 &&
+          (weight + item.weight) <= d.maxLoad) {
+        var val = max(wh.stock[item], c.orders[item]);
+        while (weight + (val * item.weight) > d.maxLoad) val--;
+        available[item] = val;
+      }
+    }
+
+    return available;
+  }
+
+  int score(Drone d, WareHouse wh, Order c) {
+    var dist = d.position.distanceTo(wh.position);
+    dist += c.position.distanceTo(wh.position);
+
+    return dist;
+  }
+
+  void _oneDroneLogic(Drone drone) {
+    Map<int, Candidate> scores = {};
+
+    for (var c in orders) {
+      for (var wh in warehouses) {
+        var candidate = new Candidate();
+        candidate.customers = c;
+        candidate.warehouse = wh;
+        candidate.items = availableItemInWarehouse(wh, c, drone);
+        if (candidate.items.length > 0) {
+          scores[score(drone, wh, c) - candidate.items.length * 5] = candidate;
+        }
+      }
+    }
+    if (scores.isNotEmpty) {
+      List<int> finalScores = scores.keys;
+      finalScores.sort();
+      var c = scores[finalScores[0]];
+      for (var item in c.items.keys) {
+        drone.load(c.warehouse, item, c.items[item]);
+      }
+      for (var item in c.items.keys) {
+        drone.deliver(c.customers, item, c.items[item]);
+      }
+    }
+  }
+
+  void _dronesLogic(List<Drone> availableDrone) {
+    for (var d in availableDrone) {
+      _oneDroneLogic(d);
+    }
+  }
+
+  List<Drone> availableDrone() => drones.where((d) => d.isAvailable());
+
+  void mainLoop() {
+    List<Drone> aDrone;
+
+    for (int i = 0; i < deadline; i++) {
+      _oneDroneTurn();
+      aDrone = availableDrone();
+      _dronesLogic(aDrone);
+    }
+  }
 }
 
-
 Simulation parse(File input) {
-    Simulation sim = new Simulation();
-    List<String> lines = input.readAsLinesSync();
-    List<String> mapParams = lines[0].split(' ');
+  Simulation sim = new Simulation();
+  List<String> lines = input.readAsLinesSync();
+  List<String> mapParams = lines[0].split(' ');
 
     // Map parameters
     sim.grid = new Grid(int.parse(mapParams[1]), int.parse(mapParams[0]));
     sim.drones = new List<Drone>.generate(int.parse(mapParams[2]), (int id) => new Drone(id: id, maxLoad: int.parse(mapParams[4])));
     sim.deadline = int.parse(mapParams[3]);
+
 
     // Available Products
     List<String> itemsDefinition = lines[2].split(' ');
@@ -70,6 +152,5 @@ Simulation parse(File input) {
         return new Order(id: id, position: pos, orders: products);
     });
 
-
-    return sim;
+  return sim;
 }

@@ -7,4 +7,8 @@ class WareHouse {
   Map<Item, int> stock = {};
 
   WareHouse(this.id, this.position, [this.stock = const {}]);
+
+  String toString() {
+    return "[WareHouse# id: $id, pos: $position, stock: $stock]";
+  }
 }
