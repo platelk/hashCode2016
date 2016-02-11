@@ -27,6 +27,7 @@ class Drone {
       items[item] += nb;
     };
     _setWaitTime(wh.position);
+    _action();
     return "${id} L ${wh.id} ${item.id} ${nb}";
   }
 
@@ -36,6 +37,7 @@ class Drone {
       customer.orders[item] -= nb;
     };
     _setWaitTime(customer.position);
+    _action();
     return "${id} D ${customer.id} ${item.id} ${nb}";
   }
 
@@ -50,12 +52,13 @@ class Drone {
       wh.stock[item] += nb;
     };
     _setWaitTime(wh.position);
+    _action();
     return "${id} U ${wh.id} ${item.id} ${nb}";
   }
 
   void oneTurn() {
     if (actionDuration == 1 && _action != null) {
-      _action();
+      // _action();
       _action = null;
     }
     if (actionDuration > 0) actionDuration -= 1;
