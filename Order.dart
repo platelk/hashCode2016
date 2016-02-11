@@ -7,4 +7,12 @@ class Order {
   Map<Item, int> orders;
 
   Order({this.id, this.position, this.orders});
+
+  int leftToDeliver() {
+    int tot = 0;
+    for (var v in orders.values) {
+      tot += v;
+    }
+    return tot;
+  }
 }

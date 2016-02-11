@@ -28,7 +28,9 @@ class Drone {
   String load(WareHouse wh, Item item, int nb) {
     _action = () {
       wh.stock[item] -= nb;
-      items[item] += nb;
+      if (items[item] == null) items[item] = nb;
+      else items[item] += nb;
+      position = wh.position;
     };
     _setWaitTime(wh.position);
     _action();
@@ -38,7 +40,8 @@ class Drone {
   String deliver(Order customer, Item item, int nb) {
     _action = () {
       items[item] -= nb;
-       customer.orders[item] -= nb;
+      customer.orders[item] -= nb;
+      position = customer.position;
     };
     _setWaitTime(customer.position);
     _action();
@@ -54,6 +57,7 @@ class Drone {
     _action = () {
       items[item] -= nb;
       wh.stock[item] += nb;
+      position = wh.position;
     };
     _setWaitTime(wh.position);
     _action();
