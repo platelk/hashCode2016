@@ -1,6 +1,7 @@
 class Simulation {
-    Map map;
+  Map map;
 
-    List<WareHouse> warehouses;
+  List<WareHouse> warehouses;
 
+  void oneTurn() {}
 }

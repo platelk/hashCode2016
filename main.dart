@@ -1,6 +1,5 @@
 import 'dart:io';
 
-
 int main(List<String> arg) {
   print("Google HashCode 2016");
   if (arg.length < 1) {
