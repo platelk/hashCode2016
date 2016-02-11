@@ -6,5 +6,5 @@ class WareHouse {
   Point position;
   Map<Item, int> stock = {};
 
-  WareHouse(this.position, [this.stock = const {}]);
+  WareHouse(this.id, this.position, [this.stock = const {}]);
 }

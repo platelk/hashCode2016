@@ -1,7 +1,7 @@
 import 'dart:math';
 import "Item.dart";
 import "WareHouse.dart";
-import "Customer.dart";
+import "Order.dart";
 
 class Drone {
   int id;
@@ -30,13 +30,13 @@ class Drone {
     return "${id} L ${wh.id} ${item.id} ${nb}";
   }
 
-  String deliver(Customer customer, Item item, int nb) {
+  String deliver(Order Order, Item item, int nb) {
     _action = () {
       items[item] -= nb;
-      customer.orders[item] -= nb;
+      Order.orders[item] -= nb;
     };
-    _setWaitTime(customer.position);
-    return "${id} D ${customer.id} ${item.id} ${nb}";
+    _setWaitTime(Order.position);
+    return "${id} D ${Order.id} ${item.id} ${nb}";
   }
 
   String wait(int nb) {

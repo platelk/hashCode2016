@@ -1,10 +1,10 @@
 import 'dart:math';
 import "Item.dart";
 
-class Customer {
+class Order {
   int id;
   Point position;
   Map<Item, int> orders;
 
-  Customer({this.id, this.position, this.orders});
+  Order({this.id, this.position, this.orders});
 }
